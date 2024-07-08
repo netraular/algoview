@@ -2,3 +2,15 @@ body {
     background-color:white;
 
 }
+
+@font-face {
+    font-family: MPLUSRoundedBold;
+    src: url('/fonts/MPLUSRounded1c-Bold.ttf');
+  }
+  
+  @font-face {
+    font-family: PixelifySans;
+    src: url('/fonts/PixelifySans-VariableFont_wght.ttf');
+  }
+  
+  

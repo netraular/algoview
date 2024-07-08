@@ -13,18 +13,20 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    <!-- Web Icon -->
+    <link rel="icon" href="{{ url('favicon.png') }}">
+    
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
 
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ url('/') }}" >
+                <img src="favicon.png" alt="Italian Trulli" style="width:50px;heigh:50px;">
+                <b style="font-family:PixelifySans;font-size:30px;color:red;">Algo</b><b style="font-family:PixelifySans;font-size:30px;color:grey">View</b>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
