@@ -5,6 +5,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Http\Controllers\SortingController;
+use App\Http\Controllers\WelcomeController;
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -23,5 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::post('/process-number', [SortingController::class, 'processNumber']);
+Route::post('/sum-number', [SortingController::class, 'sumNumber']);
+
+
 
 require __DIR__.'/auth.php';
