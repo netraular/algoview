@@ -32,8 +32,11 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::post('/process-number', [SortingController::class, 'processNumber']);
 Route::post('/sum-number', [SortingController::class, 'sumNumber']);
 
-Route::get('/sort', [PageController::class, 'showSortPage'])->name('sort');
+Route::get('/sort', [PageController::class, 'showSortPage']);
 Route::post('/sort', [SortingController::class, 'sort']);
+
+Route::get('/bubble-sort-cpp', [PageController::class, 'showBubbleSortCpp']);
+Route::post('/bubble-sort-cpp', [SortingController::class, 'bubbleSortCpp']);
 
 
 require __DIR__.'/auth.php';

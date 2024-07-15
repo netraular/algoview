@@ -5,13 +5,14 @@ import { Link, Head, router } from '@inertiajs/react';
 
 const Welcome = ({ result: initialResult }) => {
 
+    console.log("HEY");
     const canvasRef = useRef(null);
     const [columns, setColumns] = useState([100, 200, 150, 300, 250]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
-        drawColumns(context, columns);
+        // drawColumns(context, columns);
     }, [columns]);
 
     const drawColumns = (context, columns) => {

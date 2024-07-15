@@ -33,7 +33,6 @@ class SortingController extends Controller
         exec($command, $output, $returnVar);
         $result=$output[0];
         return redirect()->route('welcome')->with('result', $result);
-
     }
 
     public function sort(Request $request)
@@ -48,10 +47,18 @@ class SortingController extends Controller
             throw new ProcessFailedException($process);
         }
 
-        $sortedData = json_decode($process->getOutput(), true);
+        $output = json_decode($process->getOutput(), true);
+        $sortedData = $output['sorted_array'];
+        $steps = $output['steps'];
 
+        // dd('SortPage', [
+        //     'sortedData' => $sortedData,
+        //     'steps' => $steps,
+        //     'data' => $data
+        // ]);
         return Inertia::render('SortPage', [
             'sortedData' => $sortedData,
+            'steps' => $steps,
             'data' => $data
         ]);
     }
