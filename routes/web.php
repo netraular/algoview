@@ -7,6 +7,7 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\SortingController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\PageController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -31,6 +32,8 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::post('/process-number', [SortingController::class, 'processNumber']);
 Route::post('/sum-number', [SortingController::class, 'sumNumber']);
 
+Route::get('/sort', [PageController::class, 'showSortPage'])->name('sort');
+Route::post('/sort', [SortingController::class, 'sort']);
 
 
 require __DIR__.'/auth.php';

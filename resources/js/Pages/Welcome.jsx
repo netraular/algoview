@@ -1,9 +1,44 @@
 // resources/js/Pages/Welcome.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, Head, router } from '@inertiajs/react';
 
 const Welcome = ({ result: initialResult }) => {
+
+    const canvasRef = useRef(null);
+    const [columns, setColumns] = useState([100, 200, 150, 300, 250]);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+        drawColumns(context, columns);
+    }, [columns]);
+
+    const drawColumns = (context, columns) => {
+        const   canvasWidth = context.canvas.width;
+        const   canvasHeight = context.canvas.height;
+        const   columnWidth = canvasWidth / columns.length;
+
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        columns.forEach((column, index) => {
+            const x = index * columnWidth;
+            const y = canvasHeight - column;
+            context.fillStyle = 'blue';
+            context.fillRect(x, y, columnWidth - 2, column);
+        });
+    };
+
+    // BOTON SWAP
+
+    const swapFirst = () => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+        [columns[0], columns[1]] = [columns[1], columns[0]];
+        drawColumns(context, columns);
+    };
+
+    // CODIGO ANTIGUO
     const [MultiplyNumber, setNumberMultiply] = useState('');
     const [SumNumber, setNumberSum] = useState('');
 
@@ -74,6 +109,9 @@ const Welcome = ({ result: initialResult }) => {
                     )}
                 </div>
             </div>
+            <br />
+            <canvas ref={canvasRef} width={500} height={500} style={{ border: '1px solid black' }}></canvas>
+            <button onClick={swapFirst}>SWAP</button>
         </div>
     );
 };
