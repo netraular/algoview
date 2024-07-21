@@ -4,10 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, Head, router } from '@inertiajs/react';
 
 const Welcome = ({ result: initialResult }) => {
-
-    console.log("HEY");
     const canvasRef = useRef(null);
-    const [columns, setColumns] = useState([100, 200, 150, 300, 250]);
+    const [columns, setColumns] = useState([1000, 200, 150, 300, 250]);
 
     useEffect(() => {
         const canvas = canvasRef.current;

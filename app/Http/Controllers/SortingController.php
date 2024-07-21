@@ -35,6 +35,27 @@ class SortingController extends Controller
         return redirect()->route('welcome')->with('result', $result);
     }
 
+    public function bubbleSortCpp(Request $request)
+    {
+        $rawData = $request->input('columns');
+        $rawDataString = implode(' ', $rawData);
+
+        $process = new Process([base_path('resources/scripts/c++/Bubble_sort/bubble'), $rawDataString]);
+        $process->run();
+
+        if (!$process->isSuccessful())
+        {
+            throw new ProcessFailedException($process);
+        }
+
+        $data = explode("\n", $process->getOutput());
+        return Inertia::render('BubbleSortCpp', [
+            'rawData' => $rawData,
+            'data' => $data,
+        ]);
+        // dd($data);
+    }
+
     public function sort(Request $request)
     {
         $data = $request->input('data');
@@ -51,11 +72,6 @@ class SortingController extends Controller
         $sortedData = $output['sorted_array'];
         $steps = $output['steps'];
 
-        // dd('SortPage', [
-        //     'sortedData' => $sortedData,
-        //     'steps' => $steps,
-        //     'data' => $data
-        // ]);
         return Inertia::render('SortPage', [
             'sortedData' => $sortedData,
             'steps' => $steps,

@@ -11,7 +11,7 @@ class PageController extends Controller
     public function showSortPage()
     {
         return Inertia::render('SortPage', [
-            'sortedData'=>[],
+            'steps'=>0,
             'data' => [],
             'sortedData' => []
         ]);
@@ -20,7 +20,7 @@ class PageController extends Controller
     public function showBubbleSortCpp()
     {
         return Inertia::render('BubbleSortCpp', [
-            'rawData'=>[],
+            'rawData'=>[400, 2, 345, 401, 233, 112, 200, 150, 300, 111],
             'data' => [],
             'sortedData' => []
         ]);

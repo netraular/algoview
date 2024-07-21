@@ -15,7 +15,7 @@ HDRS_DIR	=	./includes
 # IMPS_ITER	=	$(IMPS_DIR)/iterators/
 # IMPS_UTILS	=	$(IMPS_DIR)/utils/
 
-MAIN_INC = -I $(HDRS_DIR) -lsfml-graphics -lsfml-window -lsfml-system
+MAIN_INC = -I $(HDRS_DIR)
 # MAIN_INC	= -I $(HDRS_DIR) -I $(HDRS_CONT) -I $(HDRS_ITER) -I $(HDRS_UTILS) -I $(IMPS_DIR) -I $(IMPS_CONT) -I $(IMPS_ITER) -I $(IMPS_UTILS) -I $(TEST_DIR)
 
 IMPS		=	$(shell find $(IMPS_DIR) -type f -name "*.ipp")

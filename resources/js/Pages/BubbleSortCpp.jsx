@@ -1,57 +1,175 @@
-// resources/js/Pages/SortPage.jsx
+// resources/js/Pages/BubbleSortCpp.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import {  usePage, router } from '@inertiajs/react';
+import { start } from '@popperjs/core';
+import { Value } from 'sass';
 
-const SortPage = () => {
-    // const { props } = usePage();
-    // const initialData = props.data || [];
-    // const initialSortedData = props.sortedData || [];
-    // const initialSteps = props.steps || [];
+const BubbleSortCpp = () => {
+	const canvasRef = useRef(null);
+	const { props } = usePage();
+	const	[data, setData] = useState(props.data);
+    const   [columns, setColumns] = useState([...props.rawData]);
+	const	[step, setStep] = useState(-1);
+    const   [inputValue, setInputValue] = useState(-1);
 
-    // const [data, setData] = useState(initialData);
-    // const [sortedData, setSortedData] = useState(initialSortedData);
-    // const [steps, setSteps] = useState(initialSteps);
-    // const [currentStep, setCurrentStep] = useState(0);
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+		if (data.length > 0 && step < data.length - 1)
+		{
+            const timeout = setTimeout(() => {
+                const splited = data[step].split(",")
+                if (splited[0] === "w")
+                {
+                    drawColumnsWatch(context, columns, [Number(splited[1]), Number(splited[2])]);
+                } else if (splited[0] === "s") {
+                    const first = (element) => element == Number(splited[1]);
+                    const second = (element) => element == Number(splited[2]);
+                    
+                    const firstIndex = columns.findIndex(first);
+                    const secondIndex = columns.findIndex(second);
+                    
+                    if (firstIndex !== -1 && secondIndex !== -1) {
+                      [columns[firstIndex], columns[secondIndex]] = [columns[secondIndex], columns[firstIndex]];
+                    }
+                    drawColumnsWatch(context, columns, [Number(splited[1]), Number(splited[2])]);
+                    // animatedSwap(firstIndex, secondIndex);
+                }
+                setStep(step + 1);
+            }, 500);
+            return () => clearTimeout(timeout);
+		}
+        else
+            drawColumnsWatch(context, columns, []);
+    }, [data, step, columns]);
 
-    // useEffect(() => {
-    //     if (steps.length > 0 && currentStep < steps.length) {
-    //         const timeout = setTimeout(() => {
-    //             setData(steps[currentStep]);
-    //             setCurrentStep(currentStep + 1);
-    //         }, 500);
-    //         return () => clearTimeout(timeout);
-    //     }
-    // }, [steps, currentStep]);
+    const drawColumnsWatch = (context, columns, watching) => {
+        const   canvasWidth = context.canvas.width;
+        const   canvasHeight = context.canvas.height;
+        const   columnWidth = canvasWidth / columns.length;
 
-    // const generateRandomData = () => {
-    //     const randomData = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
-    //     setData(randomData);
-    //     setSortedData([]);
-    //     setSteps([]);
-    //     setCurrentStep(0);
-    // };
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
 
-    // const sortData = () => {
-    //     router.post('/sort', { data }, {
-    //         onSuccess: (page) => {
-    //             setSortedData(page.props.sortedData);
-    //             setSteps(page.props.steps);
-    //             setCurrentStep(0);
-    //         }
-    //     });
-    // };
+        columns.forEach((column, index) => {
+            const x = index * columnWidth;
+            const y = canvasHeight - column;
+            if (column === watching[0] || column === watching[1])
+                context.fillStyle = 'red';
+            else
+                context.fillStyle = 'blue';
+            context.fillRect(x, y, columnWidth - 2, column);
+        });
+    };
 
-    // const renderBars = (array) => {
-    //     return array.map((value, index) => (
-    //         <div key={index} style={{ height: value * 3, backgroundColor: 'blue', margin: '0 2px', width: '20px', display: 'inline-block' }}></div>
-    //     ));
-    // };
+    const animatedSwap = (firstIndex, secondIndex) => {
+        const   canvas = canvasRef.current;
+        const   context = canvas.getContext('2d');
+        const   duration = 500;
+        const   startTime = performance.now();
+        const   watching = [columns[firstIndex], columns[secondIndex]];
+
+        const   startPos = columns.map((column, index) => ({
+            x: index * (canvas.width / column.length),
+            y: canvas.height - column
+        }));
+
+        const   swappedColumns = [...columns];
+        [swappedColumns[firstIndex], swappedColumns[secondIndex]] = [swappedColumns[secondIndex], swappedColumns[firstIndex]];
+
+        const   endPos = swappedColumns.map((column, index) => ({
+            x: index * (canvas.width / column.length),
+            y: canvas.height - column
+        }));
+
+        const   animate = (currentTime) => {
+            const   elapsedTime = currentTime - startTime;
+            const   progress = Math.min(elapsedTime / duration, 1);
+
+            const interpolatedPositions = startPos.map((startP, index) => {
+                const   endP = endPos[index];
+                const   interpolatedX = startP.x + (endP.x - startP.x) * progress;
+                return {x: interpolatedX, y: startP.y};
+            });
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            interpolatedPositions.forEach((pos, index) => {
+                const column = columns[index];
+                context.fillStyle = column === watching[0] || column === watching[1] ? 'red' : 'blue';
+                context.fillRect(pos.x, pos.y, canvas.width / columns.length - 2, canvas.height - pos.y);
+            });
+
+            if (progress < 1)
+            {
+                requestAnimationFrame(animate);
+            } else {
+                setColumns((prevColumns) => {
+                    const newColumns = [...prevColumns];
+                    [newColumns[firstIndex], newColumns[secondIndex]] = [newColumns[secondIndex], newColumns[firstIndex]];
+                    return newColumns;
+                });
+            }
+        };
+
+        requestAnimationFrame(animate);
+    };
+
+    const	sort = () => {
+		router.post('/bubble-sort-cpp', { columns }, {
+            onSuccess: (page) => {
+                console.log(page.props.data);
+				setData(page.props.data);
+				setStep(1);
+            }
+        });
+	};
+
+    const   handleInputChange = (e) => {
+        setInputValue(e.target.value);
+    }
+
+    const   handleFormSubmit = (e) => {
+        e.preventDefault();
+        if (inputValue !== '' && !columns.includes(inputValue) && inputValue > -1) {
+            setColumns([...columns, inputValue]);
+            setInputValue(-1);
+        }
+    };
+
+    const   handleDelete = (index) => {
+        const   newColumns = columns.filter((_, i) => i !== index);
+        console.log(newColumns)
+        setColumns(newColumns);
+    };
+
+    const   handleRandomize = () => {
+        const   random = [...columns];
+        for (let i = random.length -1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [random[i], random[j]] = [random[j], random[i]];
+        }
+        setColumns(random);
+    };
 
     return (
         <div className="container">
+			<canvas ref={canvasRef} width={500} height={500} style={{ border: '1px solid black' }}></canvas>
+			<button onClick={sort}>SORT</button>
+            <form onSubmit={handleFormSubmit}>
+                <input type="number" max={500} min={0} value={inputValue} onChange={handleInputChange}/>
+            </form>
+            <ul>
+                {columns.map((column, index) => (
+                    <li key={index}>
+                        {column}
+                        <button onClick={() => handleDelete(index)}>x</button>
+                    </li>
+                ))}
+            </ul>
+            <button onClick={handleRandomize}>Randomize</button>
         </div>
     );
 };
 
-export default SortPage;
+export default BubbleSortCpp;
