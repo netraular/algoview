@@ -3,9 +3,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, Head, router } from '@inertiajs/react';
 
-
 const AlgorithmsMenu = () => {
-    const algorithms = ['BubbleSort', 'QuickSort', 'MergeSort'];
+    const algorithms = [
+        { type: 'BarSort', name: 'BubbleSort' },
+        { type: 'BarSort', name: 'QuickSort' },
+        { type: 'BarSort', name: 'MergeSort' },
+        // Agrega más algoritmos aquí con su tipo correspondiente
+    ];
 
     return (
         <div>
@@ -13,7 +17,7 @@ const AlgorithmsMenu = () => {
             <ul>
                 {algorithms.map((algorithm, index) => (
                     <li key={index}>
-                        <Link href={`/algorithms/${algorithm}`}>{algorithm}</Link>
+                        <Link href={`/algorithms/${algorithm.type}/${algorithm.name}`}>{algorithm.name}</Link>
                     </li>
                 ))}
             </ul>

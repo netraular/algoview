@@ -1,0 +1,14 @@
+/* resources/css/fonts.css */
+
+@font-face {
+    font-family: 'PixelifySans';
+    src: url('/fonts/PixelifySans-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'MPLUSRounded';
+    src: url('/fonts/MPLUSRounded1c-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
