@@ -29,6 +29,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::get('/algorithms', function () { return Inertia::render('Algorithms/AlgorithmsMenu');});
+Route::get('/algorithms/{algorithm}', function ($algorithm) {  return Inertia::render("Algorithms/".ucfirst($algorithm));});
+
 Route::post('/process-number', [SortingController::class, 'processNumber']);
 Route::post('/sum-number', [SortingController::class, 'sumNumber']);
 

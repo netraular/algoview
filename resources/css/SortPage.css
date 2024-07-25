@@ -1,8 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* resources/css/SortPage.css */
+
 .bar {
     transition: all 0.5s ease-in-out;
+    background-color: blue;
+    position: absolute;
+    bottom: 0;
 }
 
 .bar.compared {

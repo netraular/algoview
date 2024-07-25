@@ -60,21 +60,22 @@ class SortingController extends Controller
     {
         $data = $request->input('data');
         $dataString = implode(',', $data);
-
+    
         $process = new Process(['python3', base_path('resources/scripts/python/sort/bubble sort/bubble_sort.py'), $dataString]);
         $process->run();
-
+    
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
-
+    
         $output = json_decode($process->getOutput(), true);
         $sortedData = $output['sorted_array'];
         $steps = $output['steps'];
-
+        $comparisons = $output['comparisons'];
         return Inertia::render('SortPage', [
             'sortedData' => $sortedData,
             'steps' => $steps,
+            'comparisons' => $comparisons,
             'data' => $data
         ]);
     }

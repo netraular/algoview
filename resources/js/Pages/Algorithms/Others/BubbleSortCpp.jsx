@@ -1,10 +1,7 @@
 // resources/js/Pages/BubbleSortCpp.jsx
 
 import React, { useState, useRef, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import {  usePage, router } from '@inertiajs/react';
-import { start } from '@popperjs/core';
-import { Value } from 'sass';
 
 const BubbleSortCpp = () => {
 	const canvasRef = useRef(null);

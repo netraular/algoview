@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "bootstrap-icons": "^1.11.3",
+        "three": "^0.166.1",
         "watch": "^0.13.0"
     }
 }
