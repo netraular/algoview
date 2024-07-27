@@ -3,25 +3,19 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Http\Controllers\SortingController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\PageController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
+require __DIR__.'/auth.php';
+Route::get('/dashboard', function () {    return Inertia::render('Dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -29,16 +23,17 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
-Route::get('/algorithms', function () { return Inertia::render('Algorithms/AlgorithmsMenu');});
-Route::get('/algorithms/{type}/{algorithm}', function ($type, $algorithm) {      return Inertia::render("Algorithms/".ucfirst($type)."/".ucfirst($algorithm)); });
-Route::post('/process-number', [SortingController::class, 'processNumber']);
-Route::post('/sum-number', [SortingController::class, 'sumNumber']);
 
-Route::get('/sort', [PageController::class, 'showSortPage']);
-Route::post('/sort', [SortingController::class, 'sort']);
+Route::get('/algorithms', [PageController::class, 'showAlgorithmMenu'])->name('algorithms.menu');
 
-Route::get('/bubble-sort-cpp', [PageController::class, 'showBubbleSortCpp']);
-Route::post('/bubble-sort-cpp', [SortingController::class, 'bubbleSortCpp']);
+Route::get('/algorithms/BarSort/MergeSort', [PageController::class, 'showMergeSort'])->name('algorithms.mergeSort');
+Route::post('/algorithms/BarSort/MergeSort', [SortingController::class, 'MergeSort']);
+Route::get('/algorithms/BarSort/BubbleSort', [PageController::class, 'showBubbleSort'])->name('algorithms.bubbleSort');
+Route::post('/algorithms/BarSort/BubbleSort', [SortingController::class, 'playBubbleSort']);
 
 
-require __DIR__.'/auth.php';
+// Route::post('/algorithms', [SortingController::class, 'playAlgorithm']);
+// Route::post('/process-number', [SortingController::class, 'processNumber']);
+// Route::post('/sum-number', [SortingController::class, 'sumNumber']);
+// Route::get('/sort', [PageController::class, 'showSortPage']);
+// Route::post('/sort', [SortingController::class, 'sort']);

@@ -8,6 +8,9 @@ use Inertia\Inertia;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
+define('_CPP', 1);
+define('_PYTHON', 2);
+
 class SortingController extends Controller
 {
     //Test for react interaction
@@ -49,11 +52,10 @@ class SortingController extends Controller
         }
 
         $data = explode("\n", $process->getOutput());
-        return Inertia::render('BubbleSortCpp', [
+        return Inertia::render('Algorithms/AlgorithmsMenu', [
             'rawData' => $rawData,
             'data' => $data,
         ]);
-        // dd($data);
     }
 
     public function sort(Request $request)
@@ -78,5 +80,60 @@ class SortingController extends Controller
             'comparisons' => $comparisons,
             'data' => $data
         ]);
+    }
+
+    public function playBubbleSort(Request $request)
+    {
+        $rawData = $request->input('columns');
+        $path = $request->input('path');
+        $mode = $request->input('mode');
+
+        if ($mode == _CPP)
+        {
+            $rawDataString = implode(' ', $rawData);
+            $process = new Process([base_path($path), $rawDataString]);
+        }
+        else if($mode == _PYTHON)
+        {
+            $rawDataString = implode(',', $rawData);
+            $process = new Process(['python3', base_path('resources/scripts/python/sort/bubble sort/bubble_sort.py'), $rawDataString]);
+        }
+
+        $process->run();
+
+        if (!$process->isSuccessful())
+        {
+            throw new ProcessFailedException($process);
+        }
+
+        if ($mode == _CPP)
+        {
+            $data = explode("\n", $process->getOutput());
+            return Inertia::render('Algorithms/AlgorithmsMenu', [
+                'rawData' => $rawData,
+                'data' => $data,
+            ]);
+        }
+        else if ($mode == _PYTHON)
+        {
+            $output = json_decode($process->getOutput(), true);
+            $sortedData = $output['sorted_array'];
+            $steps = $output['steps'];
+            $comparisons = $output['comparisons'];
+            return Inertia::render('SortPage', [
+                'sortedData' => $sortedData,
+                'steps' => $steps,
+                'comparisons' => $comparisons,
+                'data' => $rawData,
+            ]);
+        }
+    }
+
+    public function MergeSort(Request $request)
+    {
+        $columns = $request->input('columns');
+        sort($columns);
+    
+        return Inertia::render('Algorithms/AlgorithmsMenu', ['sortedColumns' => $columns]);
     }
 }

@@ -7,22 +7,27 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    //
     public function showSortPage()
     {
-        return Inertia::render('SortPage', [
+        return Inertia::render('Algorithms/Others/SortPage', [
             'steps'=>0,
             'data' => [],
             'sortedData' => []
         ]);
     }
 
-    public function showBubbleSortCpp()
+    public function showBubbleSort()
     {
-        return Inertia::render('BubbleSortCpp', [
-            'rawData'=>[400, 2, 345, 401, 233, 112, 200, 150, 300, 111],
-            'data' => [],
-            'sortedData' => []
-        ]);
+        return Inertia::render('Algorithms/AlgorithmsMenu', ['selectedAlgorithm' => 'BubbleSort']);
+    }
+
+    public function showMergeSort()
+    {
+        return Inertia::render('Algorithms/AlgorithmsMenu', ['selectedAlgorithm' => 'MergeSort']);
+    }
+
+    public function showAlgorithmMenu()
+    {
+        return Inertia::render('Algorithms/AlgorithmsMenu');
     }
 }
