@@ -1,0 +1,9 @@
+/* resources/css/Sidebar.css */
+
+.custom-card, .custom-card-header, .custom-card-body, .custom-card-item {
+	border-radius: 0 !important; /* Remove rounded corners */
+  }
+
+  .accordion-item, .accordion-button  {
+	border-radius: 0 !important;
+  }
