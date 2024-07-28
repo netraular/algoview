@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
 import ThemeToggle from './ThemeToggle';
+import JiraButton from './Dev/JiraButton';
 
 const Sidebar = ({ algorithms, onSelectAlgorithm, isOpen, isMobile, navbarHeight }) => {
     const sidebarStyle = {
@@ -30,12 +31,7 @@ const Sidebar = ({ algorithms, onSelectAlgorithm, isOpen, isMobile, navbarHeight
                     </li>
                 ))}
             </ul>
-            
-            <div className="mt-3">
-                <a title="Jira Board" href="https://netshiba.atlassian.net/jira/software/projects/AL/boards/1" target="_blank" rel="noopener noreferrer" className="btn btn-primary me-2">
-                    <i className="bi bi-list-task"></i> Jira
-                </a>
-            </div>
+            <JiraButton/>
             <div className="mt-3 d-flex mb-3">
                 <a title="GitHub Repository" href="https://github.com/netraular/algoview" target="_blank" rel="noopener noreferrer" className="btn btn-secondary me-2">
                     <i className="bi bi-github"></i> Github
