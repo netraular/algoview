@@ -6,6 +6,7 @@ import Sidebar from '../../Components/Sidebar';
 import BubbleSort from './BarSort/BubbleSort';
 import QuickSort from './BarSort/QuickSort';
 import MergeSort from './BarSort/MergeSort';
+import MobileNavbar from '../../Components/MobileNavbar'; // Asegúrate de importar MobileNavbar
 
 const AlgorithmsMenu = () => {
     const algorithms = [
@@ -17,6 +18,9 @@ const AlgorithmsMenu = () => {
 
     const { selectedAlgorithm } = usePage().props;
     const [currentAlgorithm, setCurrentAlgorithm] = useState(null);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [isOpen, setIsOpen] = useState(!isMobile);
+    const [navbarHeight, setNavbarHeight] = useState(0);
 
     useEffect(() => {
         if (selectedAlgorithm) {
@@ -27,6 +31,26 @@ const AlgorithmsMenu = () => {
         }
     }, [selectedAlgorithm]);
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        setIsOpen(!isMobile);
+    }, [isMobile]);
+
+    useEffect(() => {
+        const navbar = document.querySelector('.mobile-navbar');
+        if (navbar) {
+            setNavbarHeight(navbar.offsetHeight);
+        }
+    }, [isMobile]);
+
     const handleSelectAlgorithm = (algorithm) => {
         router.visit(`/algorithms/BarSort/${algorithm.name}`, {
             method: 'get',
@@ -34,13 +58,20 @@ const AlgorithmsMenu = () => {
         });
     };
 
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+    };
+
     return (
-        <div className="d-flex" >
+        <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
             <Head title="Algorithms Menu" />
 
-            <Sidebar algorithms={algorithms} onSelectAlgorithm={handleSelectAlgorithm} />
-            <div className="flex-grow-1 p-3">
-                {currentAlgorithm ? <ComponentRenderer component={currentAlgorithm} /> : <h1>Choose an Algorithm</h1>}
+            {isMobile && <MobileNavbar isOpen={isOpen} toggleSidebar={toggleSidebar} className="mobile-navbar" />}
+            <div className="d-flex flex-grow-1">
+                <Sidebar algorithms={algorithms} onSelectAlgorithm={handleSelectAlgorithm} isOpen={isOpen} isMobile={isMobile} navbarHeight={navbarHeight} />
+                <div className="flex-grow-1 p-3">
+                    {currentAlgorithm ? <ComponentRenderer component={currentAlgorithm} /> : <h1>Choose an Algorithm</h1>}
+                </div>
             </div>
         </div>
     );
