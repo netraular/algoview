@@ -1,12 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .bar {
     transition: all 0.5s ease-in-out;
 }
 
 .bar.compared {
-    background-color: red;
+    background-color: green;
 }
 
 .bar.animate {

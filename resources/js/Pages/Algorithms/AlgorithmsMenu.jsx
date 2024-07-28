@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Head, usePage, router } from '@inertiajs/react';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import '../../../css/fonts.css'; // Importa el archivo CSS
 import Sidebar from '../../Components/Sidebar';
 import BubbleSort from './BarSort/BubbleSort';
 import QuickSort from './BarSort/QuickSort';
@@ -33,8 +35,9 @@ const AlgorithmsMenu = () => {
     };
 
     return (
-        <div className="d-flex">
+        <div className="d-flex" >
             <Head title="Algorithms Menu" />
+
             <Sidebar algorithms={algorithms} onSelectAlgorithm={handleSelectAlgorithm} />
             <div className="flex-grow-1 p-3">
                 {currentAlgorithm ? <ComponentRenderer component={currentAlgorithm} /> : <h1>Choose an Algorithm</h1>}

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Link, Head } from '@inertiajs/react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../../css/fonts.css'; // Importa el archivo CSS
 

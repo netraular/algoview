@@ -1,11 +1,68 @@
+// resources/sass/app.scss
+
+
+// Tailwind CSS
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+// resources/sass/app.scss
+
 // Fonts
 @import url('https://fonts.bunny.net/css?family=Nunito');
 
 // Variables
 @import 'variables';
+// @import 'variables_dark';
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
 // Bootstrap icons
 @import "bootstrap-icons/font/bootstrap-icons.css";
+
+// Estilos adicionales
+.bar {
+    transition: all 0.5s ease-in-out;
+}
+
+.bar.compared {
+    background-color: blue;
+}
+
+.bar.animate {
+    animation: swap 0.5s ease-in-out;
+}
+
+@keyframes swap {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(20px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+// Variables de colores para modo claro
+:root {
+    --bg-color: #f8e6e6;
+    --text-color: #000000;
+  }
+  
+// Variables de colores para modo oscuro
+[data-theme="dark"] {
+--bg-color: #121212;
+--text-color: #ffffff;
+}
+
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }

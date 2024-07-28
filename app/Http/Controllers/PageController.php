@@ -16,6 +16,11 @@ class PageController extends Controller
         ]);
     }
 
+    public function showAlgorithmMenu()
+    {
+        return Inertia::render('Algorithms/AlgorithmsMenu');
+    }
+    
     public function showBubbleSort()
     {
         return Inertia::render('Algorithms/AlgorithmsMenu', ['selectedAlgorithm' => 'BubbleSort']);
@@ -26,8 +31,4 @@ class PageController extends Controller
         return Inertia::render('Algorithms/AlgorithmsMenu', ['selectedAlgorithm' => 'MergeSort']);
     }
 
-    public function showAlgorithmMenu()
-    {
-        return Inertia::render('Algorithms/AlgorithmsMenu');
-    }
 }
